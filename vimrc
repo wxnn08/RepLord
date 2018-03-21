@@ -1,5 +1,5 @@
 colorscheme ron
-syntax on:
+syntax on
 set number		
 set showmatch		
 set visualbell		
@@ -13,4 +13,4 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-au BufNewFile ~/*.cpp 0r ~/Documentos/prog/base.cpp
+au BufNewFile ~/*.cpp 0r ~/.base.cpp
