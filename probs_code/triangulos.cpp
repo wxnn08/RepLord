@@ -30,8 +30,8 @@ bool buscaBin(ll i, ll ini, ll fim){
     	return buscaBin(i, mid+1, fim);
 }
 
-bool buscaTriangulo(ll i, ll maxx) {
-	return buscaBin(soma[i] + 1*maxx, 0, n) && buscaBin(soma[i] + 2*maxx, 0, n);
+bool buscaTriangulo(ll i, ll ladoTriangulo) {
+	return buscaBin(soma[i] + 1*ladoTriangulo, 0, n) && buscaBin(soma[i] + 2*ladoTriangulo, 0, n);
 }
 
 int main() {	
@@ -44,14 +44,14 @@ int main() {
 		soma[i] = soma[i-1] + val[i];
 	    }
 	    
-	    ll maxx = soma[n]/3;
+	    ll ladoTriangulo = soma[n]/3;
 
 	    if (soma[n]%3 != 0) {
 		cout <<0 <<endl;
 	    }
 	    else {
-		for(ll i = 0; soma[i] < maxx; i++) {
-		    if (buscaTriangulo(i, maxx)) cont++;
+		for(ll i = 0; soma[i] < ladoTriangulo; i++) {
+		    if (buscaTriangulo(i, ladoTriangulo)) cont++;
 		}
 
 		cout << cont << endl;
