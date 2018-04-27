@@ -5,7 +5,7 @@ using namespace std;
 #define mk make_pair
 #define fi first
 #define sec second
-#define for_(i, a, b) for(int i = int(a); i < int(b); i++)
+#define fori(i, a, b) for(int i = int(a); i < int(b); i++)
 
 typedef long long ll;
 const int INF = 0x3f3f3f3f;

@@ -1,8 +1,5 @@
-colorscheme ron
-syntax on
 set number		
 set showmatch		
-set visualbell		
  
 set autoindent		
 set shiftwidth=4	
