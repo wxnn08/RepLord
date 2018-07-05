@@ -10,30 +10,26 @@ using namespace std;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
-
-int	const N = 1e5+5;
-int val[N], n, maior=-1;
-ll dp[N];
-
-ll lul(int pos){
-	if(pos>maior) return 0;
-	if(dp[pos]!=-1) return dp[pos];
-	return dp[pos] = max((ll)val[pos]*pos + lul(pos+2), lul(pos+1));
-}
-
+ 
 int main(){
     ios_base::sync_with_stdio(false);
-
+	
+	int n;
 	cin >>n;
-	for(int i=0; i<n; i++){
-		int tmp;
-		cin >>tmp;
-		val[tmp]++;
-		maior = max(maior, tmp);
-	}
+	
+	int meio = ceil(n/2);
+	for(int i=1; i<=n; i++){
+		for(int j=1; j<=n; j++){
+			int x = i; 
+			int y = j;
+			if(x>meio) x = (n+1)-x;
+			if(y>meio) y = (n+1)-y;
 
-	memset(dp, -1, sizeof(dp));
-	cout <<lul(1) <<endl;
+			if(x<y) cout <<x <<' ';
+			else cout <<y <<' ';
+		}
+		cout <<endl;
+	}
     
     return 0;
 }
