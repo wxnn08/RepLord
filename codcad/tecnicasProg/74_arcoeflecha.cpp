@@ -8,17 +8,17 @@ using namespace std;
 #define fori(i, a, b) for(int i = int(a); i < int(b); i++)
 
 typedef long long ll;
-const double INF = 0x3f3f3f3f;
+const ll INF = 9999999999999;
 const double PI = acos(-1.0);
 
-int solve(vector<double> &v){
+ll solve(vector<ll> &v){
 	
 	if(v.size() == 1) return 0;
 	
-	vector<double> l (v.begin(), v.begin() + v.size()/2);
-	vector<double> r (v.begin() + v.size()/2, v.end());
+	vector<ll> l (v.begin(), v.begin() + v.size()/2);
+	vector<ll> r (v.begin() + v.size()/2, v.end());
 	
-	int contDardos = 0;
+	ll contDardos = 0;
 	contDardos += solve(l);
 	contDardos += solve(r);
 	
@@ -47,11 +47,12 @@ int main(){
     int n;
 	cin >>n;
 	
-	vector<double> v; 
+	vector<ll> v; 
+
 	fori(i, 0, n){
 		int x, y;
 		cin >> x >>y;
-		double raio = (double)sqrt(pow(x,2)+pow(y,2));
+		ll raio = pow(x,2)+pow(y,2);
 		v.pb(raio);
 	}
 	
