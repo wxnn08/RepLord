@@ -14,7 +14,11 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    
+    double n, m;
+	cin >>n >>m;
+
+	cout <<setprecision(2) <<fixed <<(n/m) <<endl;
     
     return 0;
 }
+

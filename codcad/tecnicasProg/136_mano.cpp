@@ -6,45 +6,39 @@ using namespace std;
 #define fi first
 #define sec second
 #define fori(i, a, b) for(int i = int(a); i < int(b); i++)
-
+typedef pair<int,int> pii;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
 
-const int MAXN = 10;
-int s1[MAXN], s2[MAXN], dp[MAXN][MAXN];
 
-int lcs(int a, int b){ 
+int n, m;
+const int N = 1e3;
+int moeda[N];
+int dp[N][15];
 
-	if(a<0 || b<0) return 0;
-	
-	int &r = dp[a][b];
-	if(r!=-1) return r; 
-	
-	if(s1[a]==s2[b]) return lcs(a-1, b-1)+1; 
+bool solve(int val, int qtd){
+	if(val<0 or qtd>9) return 0;
+	if(val==0) return 1;
 
-	int L = lcs(a-1, b);
-	int R = lcs(a, b-1);
+	int &r = dp[val][qtd];
+	if(r!=-1) return r;
 	
-	return r = max(L, R);
-} 
+	bool res = false;
+	for(int i=0; i<n; i++)
+		res += solve(val-moeda[i], qtd+1);
+	
+	return r = res;
+}
+
 int main(){
     ios_base::sync_with_stdio(false);
 	
-	int n, m;
 	cin >>n >>m;
-	
+	fori(i,0,n) cin >>moeda[i];
 	memset(dp, -1, sizeof dp);
-	fori(i, 0, n) {
-		cin >>s1[i];
-	}
+    cout <<(solve(m,0)?'S':'N') <<endl;
     
-	fori(i, 0, m) {
-		cin >>s2[i];
-	}
-	
-	cout <<lcs(n-1, m-1) <<endl;
-
     return 0;
 }
 

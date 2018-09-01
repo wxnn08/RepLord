@@ -14,7 +14,13 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    
-    
+	set<int> like, dlike;
+
+	int TC;
+	cin >>TC;
+	while(TC--){
+
+	}
     return 0;
 }
+

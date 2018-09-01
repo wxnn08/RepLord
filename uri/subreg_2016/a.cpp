@@ -14,7 +14,15 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    
+    int a, b, c;
+	cin >>a >>b >>c;
+	
+	bool res = false;
+	if(a == b || a == c || b == c) res = true;
+	if(a+b == c || a+c == b || b+c == a) res = true;
+
+	cout <<(res?'S':'N') <<endl;
     
     return 0;
 }
+

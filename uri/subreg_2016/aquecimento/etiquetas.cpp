@@ -14,7 +14,17 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
+    int r,g,b;
+	cin >>hex >>r >>g >>b;
+	
+	ll qtdG = r/g;
+	qtdG = pow(qtdG, 2);
     
-    
+	ll qtdB = g/b;
+	qtdB = pow(qtdB,2);
+	
+	cout <<hex <<(qtdB*qtdG)+(qtdG)+1 <<endl;
+
     return 0;
 }
+
