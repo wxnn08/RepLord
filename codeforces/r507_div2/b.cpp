@@ -8,7 +8,6 @@ using namespace std;
 #define sec second
 #define fori(i, a, b) for(int i = int(a); i < int(b); i++)
 #define cc(x)	cout << #x << " = " << x << endl
-#define ok		cout << "ok" << endl
 
 typedef pair<int,int> pii;
 typedef long long ll;
@@ -18,7 +17,26 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    
-    
+    int n, k;
+	cin >>n >>k;
+	vector<int> aux, res;
+	for(int i=0; i<=k; i++){
+		int j=i;
+		while(j<n){
+			aux.pb(j+1);
+			j+=2*k+1;
+		}
+		j-=2*k+1;
+		if(j+k>=n-1) {
+			if(res.size()==0) res = aux;
+			else if(res.size()>aux.size()) res = aux;
+		}
+		aux.clear();
+	}
+	cout <<res.size() <<endl;
+	for(int i:res) cout <<i <<' ';
+	cout <<endl;
+
     return 0;
 }
+

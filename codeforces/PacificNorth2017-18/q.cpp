@@ -18,7 +18,31 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    
-    
+    int n;
+	cin >>n;
+	
+	ll v = (n-1)/2;
+	v *= n;
+	v += n;
+	v--;
+	v /= 2;
+	
+	ll i=0, f=1e9, mid;
+	while(i<=f){
+
+		mid = ((f-i)/2)+i;
+
+		ll q = (mid-1)/2;
+		q *= mid;
+		q += mid;
+		if(q>v){
+			f = mid-1;
+		} else {
+			i = mid+1;
+		}
+	}
+
+	cout <<n-i <<endl;
     return 0;
 }
+

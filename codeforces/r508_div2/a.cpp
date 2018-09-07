@@ -18,7 +18,24 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
+	int n, k;
+	cin >>n >>k;
+	
+	int a[27];
+	memset(a, 0, sizeof a);
+	fori(i,0,n){
+		char c;
+		cin >>c;
+		a[c-'A']++;
+	}
     
-    
+	int menor = INF;
+	fori(i,0,k){
+		menor = min(menor, a[i]);
+	}
+
+	cout <<k*menor <<endl;
+
     return 0;
 }
+

@@ -18,7 +18,19 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    
-    
+	int n; cin >> n;    
+	int cont = n;
+	while(true) {
+		cont++;
+		string tmp = to_string(cont);
+		bool flag = true;
+		for(int i = 0; i < tmp.length(); i++) {
+			if(tmp[i] == '0')
+				flag = false;
+		}
+		if(flag) break;
+	}
+	cout << cont << endl;
     return 0;
 }
+

@@ -18,7 +18,17 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    
+	int n;
+	cin >>n;
+	
+	cout <<n <<':' <<endl;
+	fori(i,2,n){
+		fori(j,i-1,i+1){
+			if(n%(i+j)==0) cout <<i <<"," <<j <<endl;
+			else if((n+j)%(i+j)==0) cout <<i <<"," <<j <<endl;
+		}
+	}
     
     return 0;
 }
+
