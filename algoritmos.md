@@ -4,7 +4,7 @@
 
 ### vimrc
 
-```c++
+```pseudocode
 set number
 set showmatch
  
@@ -61,54 +61,35 @@ int max_sum(vector<int> s) {
 }
 ```
 
-### Contagem de inversões
+### Compressão de coordenadas
 
 ```c++
-int merge_sort(vector<int> &v){
-	
-    int inv=0;
-    // se o tamanho de v for 1, não há inversões
-    if(v.size()==1) return 0;
+const int N = 1e5 + 5;
+ll n, v[N];
 
-    vector<int> u1, u2;
-
-    // e faço cada um receber uma metade de v
-    for(int i=0;i<v.size()/2;i++){
-        u1.push_back(v[i]);
+int main() {
+    
+    vector<ll> ve;
+    cin >> n;
+    for(int i = 0; i < n; i++) {
+        cin >> v[i];
+        ve.push_back(v[i]);
     }
-    for(int i=v.size()/2;i<v.size();i++){
-        u2.push_back(v[i]);
-    }	
-    // ordeno u1 e u2
-    // adiciono a inv as inversões de cada metade do vetor
-    inv += merge_sort(u1);
-    inv += merge_sort(u2);
-    u1.push_back(INF);
-    u2.push_back(INF);
+    sort(ve.begin(), ve.end());
+    ve.resize(unique(ve.begin(), ve.end()) - ve.begin());
+    
+    map<ll, int> id;
+    for(int i = 0; i < (int)ve.size(); i++) 
+        id[ve[i]] = i;
 
-    int ini1=0, ini2=0;
+    for(int i = 0; i < n; i++)
+        v[i] = id[v[i]];
 
-    for(int i=0;i<v.size();i++){
-        // se o menor não usado de u1 for menor o mesmo em u2
-        if(u1[ini1]<=u2[ini2]){
-            // então o coloco em v
-            v[i]=u1[ini1];
-            // e incremento o valor de ini1
-            ini1++;
-        }
-        // caso contrário, faço o análogo com u2 e ini2
-        else {
-            v[i]=u2[ini2];
-            ini2++;
-            // não se esquecendo de adicionar o número de elementos em u1
-            // ao total de inversões em v
-            inv += u1.size()-ini1-1;
-        }
-    }
-
-    return inv;
+    return 0;
 }
 ```
+
+
 
 ## Estruturas de dados
 
@@ -144,7 +125,53 @@ void join(int x, int y) {
 }
 ```
 
-### LIS
+### Segmentation Tree com Lazy Propagation (log N)
+
+``` c++
+const int N = 1e5 + 5;
+ll seg[4*N+1];
+ll lazy[4*N+1];
+
+void prop(int r, int i, int j){
+	seg[r] += lazy[r]*(j-i+1);
+	
+	if(i != j) {
+		lazy[2*r] += lazy[r];
+		lazy[2*r+1] += lazy[r];
+	}
+	lazy[r] = 0;
+}
+
+ll query(int r, int i, int j, int a, int b){
+	prop(r,i,j);
+	if(i >b or j<a) return 0;
+	if(i>=a and j<=b) return seg[r];
+	
+	int mid = (i+j)>>1;
+	return query(2*r, i, mid, a, b) + query(2*r+1, mid+1, j, a, b);
+}
+
+void update(int r, int i, int j, int a, int b, int v){
+	prop(r, i, j);
+	if(i>b or j<a) return;
+	if(i>=a and j<=b) {
+		lazy[r] += (ll)v;
+		prop(r, i, j);
+		return;
+	}
+	int mid = (i+j)>>1;
+	update(2*r, i, mid, a, b, v);
+	update(2*r+1, mid+1, j, a , b, v);
+	seg[r] = seg[2*r] + seg[2*r+1];
+	return;
+}
+
+int main(){
+    return 0;
+}
+```
+
+### LIS s/ Seg Tree
 
 - Quantidade de elementos na maior subsequencia crescente:
 
@@ -226,17 +253,12 @@ void BFS(int x){
 ### TopoSort - O(M + N)
 
 ```c++
-#include <vector>
-#include <iostream>
-using namespace std;
-//------------------------------
 #define MAXN 100100
 int n; // número de vértices
 int m; // número de arestas
 vector<int> grafo[MAXN];
 int grau[MAXN];
 vector<int> lista; // dos vértices de grau zero
-//------------------------------
 int main(){
 	
 	cin >> n >> m;
@@ -262,7 +284,8 @@ int main(){
 		for(int i = 0;i < (int)grafo[atual].size();i++){
 			int v = grafo[atual][i];
 			grau[v]--;
-			if(grau[v] == 0) lista.push_back(v); // se o grau se tornar zero, acrescenta-se a lista
+			// se o grau se tornar zero, acrescenta-se a lista
+			if(grau[v] == 0) lista.push_back(v); 
 		}
 	}
 
@@ -355,58 +378,38 @@ int main(){
 ### Prim - O(M log N)
 
 ```c++
-
-#include <queue>
-#include <vector>
-#include <iostream>
-#include <algorithm>
-using namespace std;
-typedef pair<int, int> pii;   // para não termos que digitar pair<int, int> várias vezes,
-                              // fazemos isso para deixar o código mais organizado
-
-//---------------------
 #define MAXN 10100
-// como não existe o Infinito no computador, usaremos um número bem grande
 #define INFINITO 999999999
 
-int n, m;                      // número de vértices e arestas
-int distancia[MAXN];           // o array de distâncias à fonte
-int processado[MAXN];          // o array que guarda se um vértice foi processado
-vector<pii> vizinhos[MAXN];    // nossas listas de adjacência. O primeiro elemento do par representa a distância e o segundo representa o vértice
-//---------------------
+// número de vértices e arestas
+int n, m; 
+int distancia[MAXN];	// o array de distâncias à fonte
+int processado[MAXN];	
+vector<pii> vizinhos[MAXN]; // <distancia, vertice>
 
 int Prim(){
-	
-	for(int i = 2;i <= n;i++) distancia[i] = INFINITO; // definimos todas as distâncias como infinito, exceto a de S = 1.
-	distancia[1] = 0;                                  // Assim, garantimos que o primeiro vértice selecionado será o próprio 1.
-	
-	priority_queue< pii, vector<pii>, greater<pii> > fila; // Criamos uma fila de prioridade onde o menor fica no topo.
-	fila.push( pii(distancia[1], 1) );                     // Como se pode ver, colocamos o primeiro elemento como seja a distância do
-	                                                       // vértice a Árvore Geradora Mínima e o segundo como sendo o próprio vértice
-	
-	while(true){ // rodar "infinitamente"
-		
+	for(int i = 2;i <= n;i++) distancia[i] = INFINITO; 
+	distancia[1] = 0;                                  
+	priority_queue< pii, vector<pii>, greater<pii> > fila; 
+	// Colocamos o primeiro elemento como seja a distância do
+	// vértice a Árvore Geradora Mínima e o segundo como sendo o próprio vértice
+	fila.push( pii(distancia[1], 1) );                     
+
+	while(true){ 
 		int davez = -1;
-		
-		// selecionamos o vértice mais próximo
 		while(!fila.empty()){
-			
 			int atual = fila.top().second;
 			fila.pop();
 			
-			if(!processado[atual]){ // podemos usar esse vértice porque ele ainda não foi processado
+			if(!processado[atual]){ 
 				davez = atual;
 				break;
 			}
-			
-			// se não, continuamos procurando
 		}
+		if(davez == -1) break; 
 		
-		if(davez == -1) break; // se não achou ninguém, é o fim do algoritmo
+		processado[davez] = true; 
 		
-		processado[davez] = true; // marcamos para não voltar para este vértice
-		
-		// agora, tentamos atualizar as distâncias
 		for(int i = 0;i < (int)vizinhos[davez].size();i++){
 			
 			int dist  = vizinhos[davez][i].first;
@@ -415,14 +418,12 @@ int Prim(){
 			// A nova possível distância é dist.
 			// Comparamos isso com distancia[atual].
 			// Porém, é importante checar se o vértice atual não foi processado ainda
-			
-			if( distancia[atual] > dist && !processado[atual]){  // vemos que vale a pena usar o vértice davez
-				distancia[atual] = dist;                         // atualizamos a distância
-				fila.push( pii(distancia[atual], atual) );       // inserimos na fila de prioridade
+			if( distancia[atual] > dist && !processado[atual]){  
+				distancia[atual] = dist;                         
+				fila.push( pii(distancia[atual], atual) );       
 			}
 		}
 	}
-	
 	int custo_arvore = 0;
 	for(int i = 1;i <= n;i++) custo_arvore += distancia[i];
 	
@@ -430,20 +431,258 @@ int Prim(){
 }
 
 int main(){
-	
 	cin >> n >> m;
-	
 	for(int i = 1;i <= m;i++){
-		
 		int x, y, tempo;
 		cin >> x >> y >> tempo;
-		
 		vizinhos[x].push_back( pii(tempo, y) );
 		vizinhos[y].push_back( pii(tempo, x) );
 	}
-	
-	cout << Prim() << endl; // imprimimos a resposta
-	
+	cout << Prim() << endl;
 	return 0;
 }
 ```
+
+
+
+## Strings
+
+### KMP
+
+```c++
+border = proper prefix that is suffix p[i] = 
+    = length of longest border of prefix of length i, s[0...i-1]
+
+const int N = 1e6 + 6;
+int pi[N];
+string p, t;
+
+void pre () {
+	p += '#';
+	pi[0] = pi[1] = 0;
+	for (int i = 2; i <= (int)p.size(); i++) {
+		pi[i] = pi[i-1];
+
+		while (pi[i] > 0 and p[pi[i]] != p[i-1])
+			pi[i] = pi[pi[i]];
+
+		if (p[pi[i]] == p[i-1])
+			pi[i]++;
+	}
+}
+
+void report (int at) {
+	cout << "padrao encontrado em " << at << endl;
+}
+
+void KMP () {
+	pre ();
+
+	int k = 0;
+	int m = p.size() - 1;
+
+	for (int i = 0; i < (int)t.size(); i++) {
+		while (k > 0 and p[k] != t[i])
+			k = pi[k];
+		
+		if (p[k] == t[i])
+			k++;
+		if (k == m)
+			report (i - m + 1);
+	}
+
+}
+```
+
+### Trie
+
+```c++
+struct Trie {
+	int cnt, word;
+	map <char, Trie> m;
+ 
+	Trie () {
+		word = cnt = 0;
+		m.clear();
+	}
+ 
+	void add (const string &s, int i) {
+		cnt++;
+		if (i == (int)s.size()) {
+			word++;
+			return;
+		}
+ 
+		if (!m.count(s[i])) 
+			m[s[i]] = Trie();
+ 
+		m[s[i]].add(s, i + 1);
+	}
+
+	bool remove (const string &s, int i) {
+		if (i == (int)s.size()) {
+			if (word) {
+				word--;
+				return true;
+			}
+			return false;
+		}
+		if (!m.count(s[i]))
+			return false;
+		if (m[s[i]].remove(s, i + 1) == true) {
+			cnt--;
+			return true;
+		}
+		return false;
+	}
+ 
+	bool count (const string &s, int i) {
+		if (i == (int)s.size())
+			return word;
+		if (!m.count(s[i]))
+			return false;
+		return m[s[i]].count(s, i + 1);
+	}
+ 
+	bool count_prefix (const string &s, int i) {
+		if (word)	return true;
+		if (i == (int)s.size())
+			return false;
+		if (!m.count(s[i]))
+			return false;
+		return m[s[i]].count_prefix(s, i + 1);
+	}
+ 
+	bool is_prefix (const string &s, int i) {
+		if (i == (int)s.size())
+			return cnt;
+		if (!m.count(s[i]))
+			return false;
+		return m[s[i]].is_prefix(s, i + 1);
+	}
+ 
+	void add (const string &s) {
+		add (s, 0);
+	}
+ 
+	bool remove (const string &s) {
+		return remove(s, 0);
+	}
+ 
+	bool count (const string &s) {
+		return count(s, 0);
+	}
+ 
+	// return if trie countains a string that is prefix os s
+	// trie has 123, query 12345	returns true
+	// trie has 12345, query 123 	returns false
+	bool count_prefix (const string &s) {
+		return count_prefix(s, 0);
+	}
+ 
+	// return if s is prefix of some string countained in trie
+	// trie has 12345, query 123 	returns true
+	// trie has 123, query 12345	returns false
+	bool is_prefix (const string &s) {
+		return is_prefix(s, 0);
+	}
+} T;
+```
+
+## Outros
+
+### Tabela ASCII
+
+![/home/wesley/Documents/RepLord/imgs/ascii.jpg](/home/wesley/Documents/RepLord/imgs/ascii_table.png)
+
+### Séries
+
+![](/home/wesley/Documents/RepLord/imgs/series.png)
+
+### Containers - Regional 2016
+
+```c++
+struct state {
+	int v[2][4];
+	state(){}
+	
+	void read(){
+		fori(i,0,2)
+			fori(j,0,4)
+				cin >>v[i][j];
+	}
+
+	bool operator<(const state &b) const{
+		fori(i,0,2)
+			fori(j,0,4)
+				if(v[i][j] != b.v[i][j]) 
+					return v[i][j]<b.v[i][j];
+		return false;
+	}
+
+	bool operator==(const state &b) const{
+		if((*this)<b or b<(*this)) return false;
+		return true;
+	}
+
+} beg, last;
+
+int dir[4][2] = {{0,-1},{-1,0},{0,1},{1,0}};
+
+bool pode(int i, int j){
+	return i>=0 and j>=0 and i<2 and j<4;
+}
+
+int go(){
+	map<state, int> m;
+	priority_queue<pair<int, state>, 
+    	vector<pair<int, state> >, greater<pair<int,state> > > pq;
+	m[beg] = 0;
+
+	pq.emplace(0, beg);
+	while(!pq.empty()){
+		
+		state at = pq.top().sec;
+		int dist = pq.top().fi;
+		pq.pop();
+		
+		if(at == last) 
+			return dist;
+
+		for(int i=0; i<2; i++){
+			for(int j=0; j<4; j++){
+				for(int k=0; k<4; k++){
+					int ii = i+dir[k][0];
+					int jj = j+dir[k][1];
+					
+					if(!pode(ii,jj)) continue;
+
+					state next = at;
+					swap(next.v[ii][jj], next.v[i][j]);
+
+					int peso = next.v[ii][jj] + next.v[i][j];
+					if(!m.count(next) or m[next]>peso+dist){
+						m[next] = peso+dist;
+						pq.emplace(peso+dist, next);
+					}
+				}
+			}
+		}
+	}
+
+	return INF;
+}
+
+ 
+int main(){
+    ios_base::sync_with_stdio(false);
+
+    beg.read();
+    last.read();
+
+    cout <<go() <<endl;
+
+    return 0;
+}
+```
+
