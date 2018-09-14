@@ -593,11 +593,13 @@ struct Trie {
 
 ### Tabela ASCII
 
-![/home/wesley/Documents/RepLord/imgs/ascii.jpg](/home/wesley/Documents/RepLord/imgs/ascii_table.png)
+![Imgur](https://i.imgur.com/tsyZFvh.png)
 
 ### Séries
 
-![](/home/wesley/Documents/RepLord/imgs/series.png)
+![Imgur](https://i.imgur.com/BtYUYKn.png)
+
+
 
 ### Containers - Regional 2016
 
