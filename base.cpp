@@ -10,7 +10,7 @@ using namespace std;
 #define cc(x)	cout << #x << " = " << x << endl
 #define ok		cout << "ok" << endl
 
-typedef pair<int,int> pii;
+typedef pair<int,int> ii;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
