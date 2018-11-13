@@ -22,10 +22,9 @@ int lul (int pos, int saque) {
 	int &r = dp[pos][saque];
 	if(r!=-1) return r;
 	
-	int cont=0;
-	for(int i=0; i<=v[pos]; i++) {
-		cont += lul(pos+1, saque-(val[pos]*i));
-	}
+	int cont = 0;
+	for(int i = 0; i <= v[pos]; i++) 
+		cont += lul(pos+1, saque - (val[pos]*i));
 
 	return r = cont;
 }
@@ -37,9 +36,7 @@ int main() {
 	cin >>qtd;
 	memset(dp, -1, sizeof dp);
 
-    fori(i, 0, 6) {
-		cin >>v[i];
-	}
+    fori(i, 0, 6) cin >>v[i];
 	
 	cout <<lul(0, qtd) <<endl;
 
