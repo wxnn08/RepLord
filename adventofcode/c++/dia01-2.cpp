@@ -14,35 +14,34 @@ typedef pair<int,int> ii;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
-const int N = 100 + 3;
  
 int main(){
     ios_base::sync_with_stdio(false);
-	int n; cin >> n;
-	int v[N];
-	ll ans[N];
-	for(int i = 1; i <= n; i++)
-		cin >> v[i];
-	for(int i = 1; i <= n; i++) {
-		int cont = 1;
-		int j = v[i];
-		while(j != i and cont < 103) {
-			cont++;
-			j = v[j];
-		}
-		ans[i] = cont;
-		if(ans[i] % 2 == 0) ans[i] /= 2;
-	}
-	ll mmc = ans[1];
-	for(int i = 1; i <= n; i++) {
-		if(ans[i] == 103) {
-			cout << -1 << endl;
+	
+	set<ll> s;
+	vector<ll> v;
+	ll sum = 0;
+	s.insert(sum);
+	ll p;
+	while(cin >>p) {
+		v.pb(p);
+		sum += p;
+		if(s.count(sum)) {
+			cout <<sum <<endl;
 			return 0;
 		}
-		mmc = (mmc * ans[i])/__gcd(mmc,ans[i]); 
+		s.insert(sum);
 	}
-	cout << mmc << endl;
+	
+	ll i = 0;
+	while(true) {
+		sum += v[i++];
+		if(s.count(sum)) break;
+		if(i >= v.size()) i = 0;
+		s.insert(sum);
+	}
     
+	cout <<sum <<endl;
     return 0;
 }
 

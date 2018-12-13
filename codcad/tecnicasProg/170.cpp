@@ -22,6 +22,7 @@ int s;
 
 const int N = 5e3+5;
 int dp[N][7][505];
+
 int solve(int din, int idNota) {
 	if(din == s) return 1;
 	if(din > s) return 0;

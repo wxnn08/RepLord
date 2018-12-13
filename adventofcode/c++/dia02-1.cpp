@@ -14,35 +14,30 @@ typedef pair<int,int> ii;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
-const int N = 100 + 3;
  
 int main(){
     ios_base::sync_with_stdio(false);
-	int n; cin >> n;
-	int v[N];
-	ll ans[N];
-	for(int i = 1; i <= n; i++)
-		cin >> v[i];
-	for(int i = 1; i <= n; i++) {
-		int cont = 1;
-		int j = v[i];
-		while(j != i and cont < 103) {
-			cont++;
-			j = v[j];
+	
+	string s;
+	ll cont2 = 0 , cont3 = 0;
+    while(cin >>s) {
+		ll qtd[30], aux2 = 0, aux3 = 0;
+		memset(qtd, 0, sizeof qtd);
+		for(int i = 0; i < s.size(); i++) {
+			int pos = s[i] - 'a';
+			qtd[pos]++;
+			if(qtd[pos] == 2) aux2++;
+			if(qtd[pos] == 3) {
+				aux2--;
+				aux3++;
+			}
+			if(qtd[pos] == 4) aux3--;
 		}
-		ans[i] = cont;
-		if(ans[i] % 2 == 0) ans[i] /= 2;
+		cont2 += (aux2>0?1:0);
+		cont3 += (aux3>0?1:0);
 	}
-	ll mmc = ans[1];
-	for(int i = 1; i <= n; i++) {
-		if(ans[i] == 103) {
-			cout << -1 << endl;
-			return 0;
-		}
-		mmc = (mmc * ans[i])/__gcd(mmc,ans[i]); 
-	}
-	cout << mmc << endl;
-    
+	
+	cout <<cont2*cont3 <<endl;
     return 0;
 }
 

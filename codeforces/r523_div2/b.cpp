@@ -14,35 +14,40 @@ typedef pair<int,int> ii;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
-const int N = 100 + 3;
- 
+
+bool comp(int a, int b) {
+	return a > b;
+}
+
 int main(){
     ios_base::sync_with_stdio(false);
-	int n; cin >> n;
-	int v[N];
-	ll ans[N];
-	for(int i = 1; i <= n; i++)
-		cin >> v[i];
-	for(int i = 1; i <= n; i++) {
-		int cont = 1;
-		int j = v[i];
-		while(j != i and cont < 103) {
-			cont++;
-			j = v[j];
-		}
-		ans[i] = cont;
-		if(ans[i] % 2 == 0) ans[i] /= 2;
+
+    int n, m;
+	cin >>n >>m;
+
+	vector<ll> v;
+	for(int i = 0; i < n; i++) {
+		ll a; cin >>a;
+		v.pb(a);
 	}
-	ll mmc = ans[1];
-	for(int i = 1; i <= n; i++) {
-		if(ans[i] == 103) {
-			cout << -1 << endl;
-			return 0;
-		}
-		mmc = (mmc * ans[i])/__gcd(mmc,ans[i]); 
+
+	sort(v.begin(), v.end(), comp);
+	ll posh = v[0];
+	ll ans = 0;
+	vector<ll> p;
+	for(int i = 0; i < n-1; i++) {
+		ll dif = max(1LL, posh - v[i+1]);
+		p.pb(dif);
+		if(posh > 0) posh = posh - dif;
 	}
-	cout << mmc << endl;
-    
+
+	p.pb(max(1LL, posh));
+
+	for(int i = 0; i < n; i++)
+		ans += v[i]-p[i];
+
+	cout <<ans <<endl;
+
     return 0;
 }
 

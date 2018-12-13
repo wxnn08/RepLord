@@ -14,34 +14,35 @@ typedef pair<int,int> ii;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
-const int N = 100 + 3;
  
 int main(){
     ios_base::sync_with_stdio(false);
-	int n; cin >> n;
-	int v[N];
-	ll ans[N];
-	for(int i = 1; i <= n; i++)
-		cin >> v[i];
-	for(int i = 1; i <= n; i++) {
-		int cont = 1;
-		int j = v[i];
-		while(j != i and cont < 103) {
-			cont++;
-			j = v[j];
-		}
-		ans[i] = cont;
-		if(ans[i] % 2 == 0) ans[i] /= 2;
+
+    vector<string> v;
+	string s;
+	while(cin >>s) {
+		v.pb(s);
 	}
-	ll mmc = ans[1];
-	for(int i = 1; i <= n; i++) {
-		if(ans[i] == 103) {
-			cout << -1 << endl;
-			return 0;
+
+	for(int i = 0; i < v.size(); i++) {
+		for(int j = i+1; j < v.size(); j++) {
+			if(v[i].size() != v[j].size()) continue;
+			int c = 0, id = -1;
+			for(int k = 0; k < v[i].size() and c < 2; k++) {
+				if(v[i][k] != v[j][k]) {
+					c++;
+					id = k;
+				}
+			}
+			if(c == 1) {
+				for(int k = 0; k < v[i].size(); k++) {
+					if(k != id) cout <<v[i][k];
+				}
+				cout <<endl;
+				return 0;
+			}
 		}
-		mmc = (mmc * ans[i])/__gcd(mmc,ans[i]); 
 	}
-	cout << mmc << endl;
     
     return 0;
 }

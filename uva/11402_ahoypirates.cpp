@@ -77,22 +77,26 @@ void update(int r, int i, int j, int a, int b, int v){
 }
 
 int main(){
+	
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
     int TC;
-	scanf(" %d", &TC);
+	cin >>TC;
 	
 	int test = 1;
 	while(test <= TC){
-		printf("Case %d:\n" ,test++);
+		cout <<"Case " <<test++ <<":" <<endl;
 
 		int m;
-		scanf(" %d", &m);
+		cin >>m;
 		
 		string s = "";
 		fori(i,0,m){
 			int qtd;
 			char tmp[50];
-			scanf(" %d %s", &qtd, &tmp[0]);
+			cin >>qtd >>tmp;
 			fori(i,0,qtd) s += tmp;
 		}
 
@@ -101,19 +105,18 @@ int main(){
 
 		int q, a, b;
 		char op;
-		scanf("%d", &q);
+		cin >>q;
 
 		int god = 1;
 		reset(1, 0, tam-1);
 		for(int i=0; i<q; i++){
-			scanf(" %c%d%d", &op, &a, &b);
-			//cin >>op >>a >>b;
+			cin >>op >>a >>b;
 			if(op == 'F') update(1, 0, tam-1, a, b, 2);
 			if(op == 'E') update(1, 0, tam-1, a, b, 1);
 			if(op == 'I') update(1, 0, tam-1, a, b, 3);
 			if(op == 'S'){
 				int ans = query(1,0,tam-1, a, b);
-				printf("Q%d: %d\n", god++, ans);
+				cout <<"Q" <<god++ <<": " <<ans <<endl;
 			}
 		}
 	}
