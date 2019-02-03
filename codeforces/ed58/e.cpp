@@ -6,7 +6,6 @@ using namespace std;
 #define mk make_pair
 #define fi first
 #define sec second
-#define fori(i, a, b) for(int i = int(a); i < int(b); i++)
 #define cc(x)	cout << #x << " = " << x << endl
 #define ok		cout << "ok" << endl
 
@@ -18,20 +17,27 @@ const double PI = acos(-1.0);
 int main(){
     ios_base::sync_with_stdio(false);
 
-    ll a, b, c, d;
-	cin >>a >>b >>c >>d;
-	
-	for(ll n = 1; n <= sqrt(c); n++) {
-		if(n%a == 0 and n%b != 0 and c%n == 0 and d%n != 0) {
-			cout <<n <<endl;
-			return 0;
+    int n; cin >>n;
+	int h, w, a, b;
+	char c;
+	cin >>c;
+	cin >>a >>b;
+	h = min(a, b);
+	w = max(a, b);
+	for(int i = 1; i < n; i++) {
+		cin >>c;
+		cin >>a >>b;
+		if(c == '+') {
+			h = max(min(a, b), h);
+			w = max(max(a, b), w);
+		}
+		else {
+			if((a >= h and b >= w) or (a >= w and b >= h))
+				cout <<"YES" <<endl;
+			else
+				cout <<"NO" <<endl;
 		}
 	}
-	if(c%a == 0 and c%b != 0 and c%c == 0 and d%c != 0) {
-		cout <<c <<endl;
-		return 0;
-	}
-    cout <<-1 <<endl;
     return 0;
 }
 

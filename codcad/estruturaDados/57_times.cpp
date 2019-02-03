@@ -17,21 +17,33 @@ const double PI = acos(-1.0);
  
 int main(){
     ios_base::sync_with_stdio(false);
-
-    ll a, b, c, d;
-	cin >>a >>b >>c >>d;
 	
-	for(ll n = 1; n <= sqrt(c); n++) {
-		if(n%a == 0 and n%b != 0 and c%n == 0 and d%n != 0) {
-			cout <<n <<endl;
-			return 0;
+	const int N = 1e4+5;
+	pair<int, string> p[N];
+
+    int n, t;
+	cin >>n >>t;
+	for(int i = 0; i < n; i++) {
+		cin >>p[i].sec >>p[i].fi;
+	}
+	sort(p, p+n, greater<pair<int, string>>());
+	
+	vector<string> team[N];
+	for(int i = 0; i < t; i++) {
+		for(int j = i; j < n; j+=t) {
+			team[i].pb(p[j].sec);
 		}
+		sort(team[i].begin(), team[i].end());
 	}
-	if(c%a == 0 and c%b != 0 and c%c == 0 and d%c != 0) {
-		cout <<c <<endl;
-		return 0;
+
+	for(int i = 0; i < t; i++) {
+		cout <<"Time " <<i+1 <<endl;
+		for(string j:team[i]) {
+			cout <<j <<endl;
+		}
+		cout <<endl;
 	}
-    cout <<-1 <<endl;
+    
     return 0;
 }
 

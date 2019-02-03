@@ -14,24 +14,30 @@ typedef pair<int,int> ii;
 typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
- 
+
 int main(){
     ios_base::sync_with_stdio(false);
 
-    ll a, b, c, d;
-	cin >>a >>b >>c >>d;
+    int q, s;
+	cin >>q >>s;
+    
+	const int N = 5e3+5;
+	pair<int, int> p[N];
+	for(int i = 0; i < s; i++) {
+		cin >>p[i].fi >>p[i].sec;
+	}
+	sort(p, p+s);
 	
-	for(ll n = 1; n <= sqrt(c); n++) {
-		if(n%a == 0 and n%b != 0 and c%n == 0 and d%n != 0) {
-			cout <<n <<endl;
-			return 0;
+	cout <<p[0].fi <<' ';
+	int maior = p[0].sec;
+	for(int i = 1; i < s; i++) {
+		if(p[i].fi > maior) {
+			cout <<maior <<endl <<p[i].fi <<' ';
 		}
+		maior = max(maior, p[i].sec);
 	}
-	if(c%a == 0 and c%b != 0 and c%c == 0 and d%c != 0) {
-		cout <<c <<endl;
-		return 0;
-	}
-    cout <<-1 <<endl;
+	cout <<maior <<endl;
+
     return 0;
 }
 
