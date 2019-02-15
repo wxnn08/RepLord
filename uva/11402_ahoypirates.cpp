@@ -6,120 +6,117 @@ using namespace std;
 #define mk make_pair
 #define fi first
 #define sec second
-#define fori(i, a, b) for(int i = int(a); i < int(b); i++)
 #define cc(x)	cout << #x << " = " << x << endl
 #define ok		cout << "ok" << endl
 
-typedef pair<int,int> pii;
 typedef long long ll;
+typedef pair<int,int> ii;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
 
-const int N = 1024000+3;
+const int N = 1024000 + 10;
 int seg[4*N+1];
 int lazy[4*N+1];
 
-/* lazy = 0 -> nothing
- * lazy = 1 -> set to 0
- * lazy = 2 -> set to 1
- * lazy = 3 -> invert
+/*
+ * 0- nada
+ * 1- seta 0
+ * 2- seta 1
+ * 3- inverte
  */
 
-void reset(int r, int i, int j){
-	if(i==j) return;
-	int mid = (i+j)>>1;
-	reset(2*r, i, mid);
-	reset(2*r+1, mid+1, j);
-	return;
-}
-
-void prop(int r, int i, int j){
-	if(i != j) {
-		if(lazy[r] == 1 || lazy[r] == 2){
-			seg[r] = (j-i+1)*(lazy[r]-1);
-			lazy[2*r] = lazy[2*r+1] = lazy[r];
-
-		} else if(lazy[r] == 3){
-			seg[r] = (j-i+1) - seg[r];
-			lazy[2*r] = 3-lazy[2*r];
-			lazy[2*r+1] = 3-lazy[2*r+1];
-		}
-	} else {
-		if(lazy[r] == 1) seg[r] = 0;
-		if(lazy[r] == 2) seg[r] = 1;
-		if(lazy[r] == 3) seg[r] = 1-seg[r];
+void prop(int node, int i, int j) {
+	if(lazy[node] == 1) {
+		seg[node] = 0;
+		lazy[2*node] = lazy[2*node+1] = 1;
 	}
-
-	lazy[r] = 0;
+	if(lazy[node] == 2) {
+		seg[node] = (j-i)+1;
+		lazy[2*node] = lazy[2*node+1] = 2;
+	}
+	if(lazy[node] == 3) {
+		seg[node] = (j-i)+1 - seg[node];
+		lazy[2*node] = 3 - lazy[2*node];
+		lazy[2*node+1] = 3 - lazy[2*node+1];
+	}
+	
+	lazy[node] = 0;
 }
 
-int query(int r, int i, int j, int a, int b){
-	prop(r, i, j);
-	if(i >b or j<a) return 0;
-	if(i>=a and j<=b) return seg[r];
-	int mid = (i+j) >> 1;
-	return query(2*r, i, mid, a, b)+query(2*r+1, mid+1, j, a, b);
-}
-
-void update(int r, int i, int j, int a, int b, int v){
-	prop(r, i, j);
-	if(i>b or j<a) return;
-	if(i>=a and j<=b) {
-		lazy[r] = v;
-		prop(r, i, j);
+void build(int node, int a, int b, int i, int j, string &s) {
+	lazy[node] = 0;
+	if(j < a or i > b) return;
+	if(i == j){
+		seg[node] = s[i] - '0';
 		return;
 	}
-	int mid = (i+j) >> 1;
-	update(2*r, i, mid, a, b, v);
-	update(2*r+1, mid+1, j, a, b, v);
-	seg[r] = seg[2*r]+seg[2*r+1];
+	
+	int mid = (i+j)/2;
+	build(node*2, a, b, i, mid, s);
+	build(node*2+1, a, b, mid+1, j, s);
+	seg[node] = seg[node*2]+seg[node*2+1];
 	return;
 }
 
-int main(){
-	
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+void update(int node, int a, int b, int i, int j, int val) {
+	prop(node, i, j);
+	if(j < a or i > b) return;
+	if(i >= a and j <= b) {
+		lazy[node] = val;
+		prop(node, i, j);
+		return;
+	}
 
-    int TC;
-	cin >>TC;
-	
-	int test = 1;
-	while(test <= TC){
-		cout <<"Case " <<test++ <<":" <<endl;
+	int mid = (i+j)/2;
+	update(2*node, a, b, i, mid, val);
+	update(2*node+1, a, b, mid+1, j, val);
+	seg[node] = seg[2*node] + seg[2*node+1];
+	return;
+}
 
-		int m;
-		cin >>m;
-		
-		string s = "";
-		fori(i,0,m){
-			int qtd;
-			char tmp[50];
-			cin >>qtd >>tmp;
-			fori(i,0,qtd) s += tmp;
+int query(int node, int a, int b, int i, int j) {
+	prop(node, i, j);
+	if(j < a or i > b) return 0;
+	if(i >= a and j <= b) {
+		prop(node, i, j);
+		return seg[node];
+	}
+	int mid = (i+j)/2;
+	return query(2*node, a, b, i, mid) + query(2*node+1, a, b, mid+1, j);
+}
+
+int main() {
+	
+    int tc; 
+	scanf(" %d", &tc);
+	for(int i = 1; i <= tc; i++) {
+		printf("Case %d:\n", i);
+		int m; 
+		scanf(" %d", &m);
+		int tam = 0;
+		string pirates = "";
+		while(m--) {
+			int qtd; 
+			char s[55]; 
+			scanf(" %d %s", &qtd, s);
+			tam += (qtd*strlen(s));
+			while(qtd--) pirates += s;
 		}
-
-		int tam = s.size()-1;
-		fori(i,0,s.size()) update(1, 0, tam, i, i, (s[i]-'0')+1);
-
-		int q, a, b;
-		char op;
-		cin >>q;
-
-		int god = 1;
-		reset(1, 0, tam-1);
-		for(int i=0; i<q; i++){
-			cin >>op >>a >>b;
-			if(op == 'F') update(1, 0, tam-1, a, b, 2);
-			if(op == 'E') update(1, 0, tam-1, a, b, 1);
-			if(op == 'I') update(1, 0, tam-1, a, b, 3);
-			if(op == 'S'){
-				int ans = query(1,0,tam-1, a, b);
-				cout <<"Q" <<god++ <<": " <<ans <<endl;
-			}
+		build(1, 0, tam-1, 0, tam-1, pirates);
+		int q; 
+		scanf(" %d", &q);
+		int cont = 1;
+		for(int j = 1; j <= q; j++) {
+			char op; int a, b;
+			scanf(" %c %d %d", &op, &a, &b);
+			if(op == 'E') update(1, a, b, 0, tam-1, 1);
+			if(op == 'F') update(1, a, b, 0, tam-1, 2);
+			if(op == 'I') update(1, a, b, 0, tam-1, 3);
+			if(op == 'S') printf("Q%d: %d\n", cont++, query(1, a, b, 0, tam-1));
+			
 		}
 	}
+
     return 0;
 }
 
