@@ -15,46 +15,45 @@ const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
 
 const int N = 20;
-int v[N];
+const int M = 1e6;
+ll bonus[N][N];
+ll v[N];
+ll dp[N][M];
 int n, m, k;
-vector<ii> rul[N];
 
-int bonus(int at, int mask) {
-	int ans = 0;
-	for(int i = 0; i < rul[at].size(); i++) {
-		if(mask&(1<<rul[at][i].fi)) 
-			ans += rul[at][i].sec;
-	}
-	return ans;
-}
+ll solve(int at, int mask, int cont) {
+	if(cont == m) 
+		return 0;
 
-int solve(int at, int mask) {
-	if(at >= n) return 0;
-
-	int L = solve(at+1, mask);
-	int R = 0;
-	if(!(mask & (1<<at))) {
-		R = solve(at+1, mask|(1<<at)) + v[at] + bonus(at, mask);
+	ll &r = dp[at][mask];
+	if(r != -1) return r;
+	
+	ll ans = 0;
+	for(int i = 1; i <= n; i++) {
+		if(mask&(1<<i)) continue;
+		ans = max(ans, solve(i, mask|(1<<i), cont+1) + v[i] + bonus[at][i]);
 	}
 
-	return max(L, R);
+	return r = ans;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
-
+	
 	cin >>n >>m >>k;
-    
-	for(int i = 0; i < n; i++) 
+	for(int i = 1; i <= n; i++) {
 		cin >>v[i];
-
-	for(int i = 0; i < k; i++) {
-		int a, b, c;
-		cin >>a >>b >>c;
-		rul[b-1].eb(a-1, c);
 	}
 
-	cout <<solve(0, 0) <<endl;
+	for(int i = 0; i < k; i++) {
+		int a, b;
+		ll c;
+		cin >>a >>b >>c;
+		bonus[a][b] = max(bonus[a][b], c);
+	}
+	
+	memset(dp, -1, sizeof(dp));
+	cout <<solve(0, 0, 0) <<endl;
 
     return 0;
 }
