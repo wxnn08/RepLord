@@ -13,32 +13,20 @@ typedef long long ll;
 typedef pair<int,int> ii;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
-
-int k, l, m;
-const int N = 1e6+10;
-bool solve(int n) {
-	bool p[N];
-	p[0] = 0;
-	for(int i = 1; i <= n; i++) {
-		p[i] = !p[i-1];
-		if(i >= k) p[i] |= !p[i-k];
-		if(i >= l) p[i] |= !p[i-l];
-	}
-	return p[n];
-}
-
+ 
 int main() {
     ios_base::sync_with_stdio(false);
 
-	cin >>k >>l >>m;
+    ll a;
+	scanf(" %lld", &a);
 	
-	while(m--) {
-		int t; cin >>t;
-		if(solve(t)) cout <<'A';
-		else cout <<'B';
+	int qtd = 0;
+	while(a != 0) {
+		if(a%10 == 7 or a%10 == 4) qtd++;
+		a /= 10;
 	}
-	cout <<endl;
-    
+	if(qtd == 4 or qtd == 7) printf("YES\n");
+	else printf("NO\n");
     return 0;
 }
 
