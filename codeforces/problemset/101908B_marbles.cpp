@@ -14,36 +14,63 @@ typedef pair<int,int> ii;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
 
-const int N = 30;
+const int N = 110;
 int sg[N][N];
-int mex[N];
+int mex[4*N];
 void pattern(int n) {
-	sg[0][0] = 0;
-	for(int i = 0; i < n; i++) {
-		for(int j = 0; j < n; j++) {
+	memset(sg, -1, sizeof(sg));
+	sg[1][2] = 0;
+	sg[2][1] = 0;
+
+	for(int i = 1; i < n; i++) {
+		for(int j = 1; j < n; j++) {
+			if(i == j) continue;
 			memset(mex, 0, sizeof(mex));
-			for(int k = j-1; k >= 0; k--) mex[sg[i][k]] = 1;
-			for(int k = i-1; k >= 0; k--) mex[sg[k][j]] = 1;
-			if(j < i) for(int k = 1; k <= j; k++) mex[sg[i-k][j-k]] = 1;
-			else for(int k = 1; k <= i; k++) mex[sg[i-k][j-k]] = 1;
+			for(int k = j-1; k >= 0; k--) 
+				if(sg[i][k] > -1) 
+					mex[sg[i][k]] = 1;
+			for(int k = i-1; k >= 0; k--) 
+				if(sg[k][j] > -1) 
+					mex[sg[k][j]] = 1;
+			for(int k = 1; k <= min(i, j); k++) 
+				if(sg[i-k][j-k] > -1) 
+					mex[sg[i-k][j-k]] = 1;
+
 			int at = 0;
 			while(mex[at] != 0) at++;
 			sg[i][j] = at;
 		}
 	}
-
-	for(int i = 0; i < n; i++) {
-		for(int j = 0; j < n; j++) {
+/*
+	for(int i = 0; i < 6; i++) {
+		for(int j = 0; j < 6; j++) {
 			printf("%3d ", sg[i][j]);
 		}
 		printf("\n");
 	}
+*/
+
 }
 
 int main() {
 
-    pattern(10);
+    pattern(N);
     
+	int n; cin >>n;
+	int ans = 0;
+	while(n--) {
+		int x, y;
+		cin >>x >>y;
+		if(sg[x][y] == -1) {
+			ans = 1;
+			break;
+		}
+		ans ^= sg[x][y];
+	}
+
+	if(ans) cout <<'Y' <<endl;
+	else cout <<'N' <<endl;
+
     return 0;
 }
 
