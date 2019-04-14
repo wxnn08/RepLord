@@ -5,79 +5,83 @@ using namespace std;
 #define eb emplace_back
 #define mk make_pair
 #define fi first
-#define sec second
-#define fori(i, a, b) for(int i = int(a); i < int(b); i++)
+#define se second
 #define cc(x)	cout << #x << " = " << x << endl
 #define ok		cout << "ok" << endl
+#define endl '\n'
 
-typedef pair<int,int> ii;
 typedef long long ll;
+typedef pair<int,int> ii;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
 
-const int N = 1e2 + 5;
-vector<int> g[N];
-int color[N];
-
-/*
-	Cores:
-	-1 -> nao colorido
-	 1 -> preto
-	 0 -> branco
-*/
-
+const int N = 105;
 int n, m;
-vector<int> ans, step;
-void colo(int lastColo, int at) {
-	if(ans.size() == n/2) return;
-	int atColo = 1;
-	for(int i = 0; i < g[at].size() and atColo == 1; i++) {
-		if(color[g[at][i]] == 1) 
-			atColo = 0;
+int color[N];
+bool visit[N];
+vector<int> g[N];
+vector<int> ans;
+
+void solve(int at) {
+	if(at == n) {
+		int cont = 0;
+		for(int i = 0; i < n; i++) {
+			if(color[i] == 1) cont++;
+		}
+		if(cont > ans.size()) {
+			ans.clear();
+			for(int i = 0; i < n; i++) {
+				if(color[i] == 1) ans.pb(i);
+			}
+		}
+		return;
+	}
+	
+	bool canBlack = true;
+	for(int viz:g[at]) {
+		if(color[viz] == 1) canBlack = false;
 	}
 
-	for(int i = 0; i < g[at].size(); i++) {
-		int viz = g[at][i];
-		if(color[viz] == -1) {
-			if(atColo == 1) {
-				step.pb(at);
-				color[at] = 1;
-				colo(color[at], viz);
-				step.pop_back();
-				color[at] = -1;
-			}
-			color[at] = 0;
-			colo(color[at], viz);
-			color[at] = -1;
-		}
+	if(canBlack) {
+		color[at] = 1;
+		solve(at+1);
 	}
-	if(step.size() > ans.size())
-		ans = step;
+
+	color[at] = 0;
+	solve(at+1);
+	
+	return;
 }
 
-int main(){
+int main() {
     ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	
-	int tc;
+
+    int tc;
 	cin >>tc;
-	memset(color, -1, sizeof color);
+
 	while(tc--) {
 		cin >>n >>m;
-		for(int i = 0; i < m; i++) {
-			int u, v;
-			cin >>u >>v;
-			g[u-1].pb(v-1);
-			g[v-1].pb(u-1);
-		}
-		colo(0, 0);
-		sort(ans.begin(), ans.end());
-		cout <<ans.size() <<endl;
-		for(int i : ans) cout <<i+1 <<' ';
-		cout <<endl;
-		for(int i = 0; i < N; i++) {
+
+		ans.clear();
+		for(int i = 0; i < n; i++) {
+			color[i] = 0;
+			visit[i] = 0;
 			g[i].clear();
 		}
+
+		for(int i = 0; i < m; i++) {
+			int a, b; cin >>a >>b;
+			g[a-1].pb(b-1);
+			g[b-1].pb(a-1);
+		}
+		
+		solve(0);
+		
+		cout <<ans.size() <<endl;
+		for(int at:ans) {
+			cout <<at+1 <<' ';
+		}
+		cout <<endl;
 	}
     
     return 0;
