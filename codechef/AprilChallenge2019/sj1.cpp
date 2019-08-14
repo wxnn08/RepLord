@@ -33,15 +33,9 @@ void solve(int at, ll gcd) {
 	gcd = __gcd(gcd, v[at]);
 
 	if(g[at].size() == 1 and at != 0) {
-		if(gcd == 1) ans[at] = m[at]-1;
+		if(gcd <= m[at]) ans[at] = m[at]-gcd;
 		else {
-			if(m[at]%gcd == 0) {
-				ans[at] = m[at]/gcd;
-				ans[at] = (ans[at]-1)*gcd;
-			} else {
-				ans[at] = m[at]/gcd;
-				ans[at] = ans[at]*gcd;
-			}
+			// Alguma coisa aqui
 		}
 	}
 

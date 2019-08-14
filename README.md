@@ -1,2 +1,3 @@
 # RepLord
-- Ele é meu guerreirinho.
+
+> Ele é meu guerreirinho. -Renan

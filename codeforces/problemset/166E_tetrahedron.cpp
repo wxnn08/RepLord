@@ -15,32 +15,24 @@ typedef pair<int,int> ii;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
 
-const int N = 3;
-const ll MOD = 1e9 + 7;
+const int N = 4;
+const ll MOD = 1e9+7;
 
 struct mat {
 	ll m[N][N];
-
-	mat() { 
-		memset(m, 0, sizeof m); 
+	
+	mat() {
+		memset(m, 0LL, sizeof m);
 	}
 
-	void create() {
-		m[0][0] = 1LL;
-		m[0][1] = 1LL;
-		m[0][2] = 1LL;
-
-		m[1][0] = 0LL;
-		m[1][1] = 1LL;
-		m[1][2] = 1LL;
-
-		m[2][0] = 0LL;
-		m[2][1] = 1LL;
-		m[2][2] = 0LL;
+	void base() {
+		for(int i = 0; i < N; i++) 
+			for(int j = 0; j < N; j++) 
+				m[i][j] = (i == j? 0LL:1LL);
 	}
 
 	void id() {
-		for(int i = 0; i < N; i++)
+		for(int i = 0; i < N; i++) 
 			m[i][i] = 1LL;
 	}
 
@@ -56,34 +48,36 @@ struct mat {
 		}
 		return r;
 	}
+
+	void print() {
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++)
+				cout <<m[i][j] <<' ';
+			cout <<endl;
+		}
+	}
 };
 
-ll fast_exp(ll e) {
-	e--;
-	if(e < 0) return 0;
-	
-	mat r, base;
-	r.id();
-	base.create();
+mat fast_exp(ll e) {
+	mat ans, base;
+	ans.id();
+	base.base();
+
 	while(e > 0) {
-		if(e&1LL) 
-			r = r*base;
-		base = base*base;
+		if(e&1LL) ans = ans * base;
+		base = base * base;
 		e >>= 1LL;
 	}
-	return r.m[0][0] + r.m[0][1];
+	return ans;
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 
-	int tc;
-	cin >>tc;
-
-	while(tc--) {
-		ll a, b; cin >>a >>b;
-		cout <<((fast_exp(b)+MOD)-fast_exp(a-1))%MOD <<endl;
-	}
+	ll n;
+	cin >>n;
+	mat r = fast_exp(n);
+	cout <<r.m[3][3] <<endl;;
 
 	return 0;
 }
