@@ -1,3 +1,16 @@
+/* O nosso maior medo não é sermos inadequados.
+O nosso maior medo é sermos infinitamente poderosos.
+É a nossa própria luz, não a nossa escuridão, que nos amedronta.
+Sermos pequenos não engrandece o mundo.
+Não há nada de transcendente em sermos pequenos,
+pois assim os outros não se sentirão inseguros ao nosso lado.
+Todos estamos destinados a brilhar, como as crianças.
+Não apenas alguns de nós, mas todos.
+E, enquanto irradiamos a nossa admirável luz interior,
+inconscientemente estamos a permitir aos outros fazer o mesmo.
+E, quando nos libertarmos dos nossos próprios medos,
+a nossa presença automaticamente libertará os medos dos outros.  */
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -5,30 +18,32 @@ using namespace std;
 #define eb emplace_back
 #define mk make_pair
 #define fi first
-#define sec second
-#define fori(i, a, b) for(int i = int(a); i < int(b); i++)
+#define se second
 #define cc(x)	cout << #x << " = " << x << endl
 #define ok		cout << "ok" << endl
+#define endl '\n'
 
-typedef pair<int,int> pii;
 typedef long long ll;
+typedef pair<int,int> ii;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
  
-int main(){
-    ios_base::sync_with_stdio(false);
+int main() {
+	ios_base::sync_with_stdio(false);
 
-	int n;
-	cin >>n;
-	
-	cout <<n <<':' <<endl;
-	fori(i,2,n){
-		fori(j,i-1,i+1){
-			if(n%(i+j)==0) cout <<i <<"," <<j <<endl;
-			else if((n+j)%(i+j)==0) cout <<i <<"," <<j <<endl;
-		}
+	int s;
+	cin >>s;
+
+	cout <<s <<':' <<endl;
+	for(int i = 2; i < s; i++) {
+		int aux = s/(i+i-1);
+		int aux2 = s/(i+i);
+		if(aux*(i+i-1) == s or aux*(i+i-1)+i == s)
+			cout <<i <<',' <<i-1 <<endl;
+		if(aux2*(i+i) == s or aux2*(i+i) + i == s)
+			cout <<i <<',' <<i <<endl;
 	}
-    
-    return 0;
+	
+	return 0;
 }
 

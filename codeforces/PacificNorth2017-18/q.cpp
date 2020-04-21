@@ -1,3 +1,16 @@
+/* O nosso maior medo não é sermos inadequados.
+O nosso maior medo é sermos infinitamente poderosos.
+É a nossa própria luz, não a nossa escuridão, que nos amedronta.
+Sermos pequenos não engrandece o mundo.
+Não há nada de transcendente em sermos pequenos,
+pois assim os outros não se sentirão inseguros ao nosso lado.
+Todos estamos destinados a brilhar, como as crianças.
+Não apenas alguns de nós, mas todos.
+E, enquanto irradiamos a nossa admirável luz interior,
+inconscientemente estamos a permitir aos outros fazer o mesmo.
+E, quando nos libertarmos dos nossos próprios medos,
+a nossa presença automaticamente libertará os medos dos outros.  */
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -5,44 +18,40 @@ using namespace std;
 #define eb emplace_back
 #define mk make_pair
 #define fi first
-#define sec second
-#define fori(i, a, b) for(int i = int(a); i < int(b); i++)
+#define se second
 #define cc(x)	cout << #x << " = " << x << endl
 #define ok		cout << "ok" << endl
+#define endl '\n'
 
-typedef pair<int,int> pii;
 typedef long long ll;
+typedef pair<int,int> ii;
 const int INF = 0x3f3f3f3f;
 const double PI = acos(-1.0);
+
+ll sum(ll n) {
+	return (n*(n+1))/2;
+}
  
-int main(){
-    ios_base::sync_with_stdio(false);
-
-    int n;
-	cin >>n;
-	
-	ll v = (n-1)/2;
-	v *= n;
-	v += n;
-	v--;
-	v /= 2;
-	
-	ll i=0, f=1e9, mid;
-	while(i<=f){
-
-		mid = ((f-i)/2)+i;
-
-		ll q = (mid-1)/2;
-		q *= mid;
-		q += mid;
-		if(q>v){
-			f = mid-1;
-		} else {
-			i = mid+1;
-		}
+ll search(ll x) {
+	ll l = 1, r = 1e9;
+	ll ans = 1;
+	while(l <= r) {
+		ll mid = (l+r)>>1LL;
+		if(sum(mid) <= x) ans = mid, l = mid + 1;
+		else r = mid - 1;
 	}
+	return ans;
+}
 
-	cout <<n-i <<endl;
-    return 0;
+int main() {
+	ios_base::sync_with_stdio(false);
+
+	ll n;	
+	cin >>n;
+	ll qtd = sum(n-1);
+	if(n <= 3) cout <<n-1 <<endl;
+	else cout <<n-search(qtd/2)-1 <<endl;
+	
+	return 0;
 }
 
