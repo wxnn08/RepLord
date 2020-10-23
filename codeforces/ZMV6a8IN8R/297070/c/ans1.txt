@@ -1,0 +1,4 @@
+teclado
+computador
+celular
+monitor
