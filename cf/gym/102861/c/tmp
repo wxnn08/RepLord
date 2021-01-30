@@ -1,0 +1,29 @@
+2 3
+xx xxy
+z yz xx
+
+xx  z   1
+xx  yz  2
+xx  xx  3
+xxy z   2
+xxy yz  4
+xxy xx  5
+
+repete id 2
+
+
+
+abac ab
+   abc
+
+abac = ab + ac
+ x     x'   S
+
+act t
+
+act = ac + t
+  z    S + z'
+
+a aa aaa aaaa
+
+
